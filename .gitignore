@@ -1,0 +1,17 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+#all zip files
+*.zip
+.dbc
+.DBC
+dados_ML.csv
+
+#zip data
+data/
+catboost_info/
+state_35/
+state_33/
+state_31/
