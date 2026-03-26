@@ -12,7 +12,7 @@ np.random.seed(123)
 
 
 states = [31, 33, 35]
-models = ['cat', 'cat', 'cat']
+models = ['cat', 'cat', 'xg']
 state_name = ['Minas Gerais', 'Rio de Janeiro', 'São Paulo']
 
 df = pd.read_csv('dados_ML.csv')
@@ -25,6 +25,7 @@ i = 0
 
 for n_sg in states:    
     print(n_sg)
+    model_name = models[i]
     
     df_lab_sg = df_lab.loc[df_lab['SG_UF'] == n_sg,]
     df_epi_sg = df_epi.loc[df_epi['SG_UF'] == n_sg,]
@@ -38,14 +39,16 @@ for n_sg in states:
     X_test, X_val, y_test, y_val = train_test_split(X_test, y_test, stratify = y_test, test_size = 0.5, random_state = 0)
     
     
-    name_model = 'state_'+str(n_sg)+'/'+'cat_'+str(n_sg)+'.pkl'
+    name_model = 'state_'+str(n_sg)+'/full/'+ model_name +'_'+str(n_sg)+'.pkl'
     model = joblib.load(name_model)
+    
+    feature_names = ['Fever', 'Myalgia', 'Headache', 'Rash', 'Vomiting', 'Nausea', 'Back pain', 'Conjunctivitis', 'Arthritis', 'Arthralgia', 'Petechiae', 'Leukopenia', 'Tourniquet test', 'Retro orbital pain', 'Patient age', 'Hospitalization status', 'Latitude', 'Longitude', 'Month of symptom onset', 'Days since symptom onset', 'Patient sex']
     
     explainer = shap.TreeExplainer(model)
     shap_values = explainer.shap_values(X_test)
     plt.title(state_name[i], fontsize = 18)
-    shap.summary_plot(shap_values, X_test, show = False)
+    shap.summary_plot(shap_values, X_test, feature_names=feature_names, show = False)
     plt.tight_layout()
-    plt.savefig('figures/shap_test_cat_'+str(n_sg)+'.pdf')
+    plt.savefig('figures/shap_test_full_'+str(n_sg)+'.pdf')
     plt.show()
     i = i + 1
