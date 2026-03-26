@@ -84,7 +84,21 @@ df_epi <- df_epi_denv
 df_lab['Criterio'] <- 'Laboratorial'
 df_epi['Criterio'] <- 'Clinical/Epidemiological'
 df_res <- rbind(df_lab, df_epi)
-df_res <- df_res %>% pivot_longer(cols = FEBRE:DOR_RETRO,
+df_res <- df_res %>% rename(Fever = FEBRE,
+                            Myalgia = MIALGIA,
+                            Headache = CEFALEIA,
+                            Rash = EXANTEMA,
+                            Vomiting = VOMITO,
+                            Nausea = NAUSEA,
+                            `Back pain` = DOR_COSTAS,
+                            Conjunctivitis = CONJUNTVIT,
+                            Arthritis = ARTRITE,
+                            Arthralgia = ARTRALGIA,
+                            Petechiae = PETEQUIA_N,
+                            Leukopenia = LEUCOPENIA,
+                            `Tourniquet test` = LACO,
+                            `Retro orbital pain` = DOR_RETRO)
+df_res <- df_res %>% pivot_longer(cols = Fever:`Retro orbital pain`,
                                   names_to = 'sintoma', values_to = "Y") %>% mutate(Y = ifelse(Y == 1, 1, 0)) %>%
   filter(!is.na(Y)) %>% group_by(Criterio, sintoma) %>% summarise(n = sum(Y, na.rm = TRUE))
 
@@ -117,7 +131,21 @@ df_epi <- df_epi_chik
 df_lab['Criterio'] <- 'Laboratorial'
 df_epi['Criterio'] <- 'Clinical/Epidemiological'
 df_res <- rbind(df_lab, df_epi)
-df_res <- df_res %>% pivot_longer(cols = FEBRE:DOR_RETRO,
+df_res <- df_res %>% rename(Fever = FEBRE,
+                            Myalgia = MIALGIA,
+                            Headache = CEFALEIA,
+                            Rash = EXANTEMA,
+                            Vomiting = VOMITO,
+                            Nausea = NAUSEA,
+                            `Back pain` = DOR_COSTAS,
+                            Conjunctivitis = CONJUNTVIT,
+                            Arthritis = ARTRITE,
+                            Arthralgia = ARTRALGIA,
+                            Petechiae = PETEQUIA_N,
+                            Leukopenia = LEUCOPENIA,
+                            `Tourniquet test` = LACO,
+                            `Retro orbital pain` = DOR_RETRO)
+df_res <- df_res %>% pivot_longer(cols = Fever:`Retro orbital pain`,
                                   names_to = 'sintoma', values_to = "Y") %>% mutate(Y = ifelse(Y == 1, 1, 0)) %>%
   filter(!is.na(Y)) %>% group_by(Criterio, sintoma) %>% summarise(n = sum(Y, na.rm = TRUE))
 
