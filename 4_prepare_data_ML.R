@@ -45,6 +45,7 @@ df <- df %>% filter(CLASSI_FIN %in% c(10, 11, 12))
 ### Chikungunya 
 df_chik <- df_chik %>% filter(CLASSI_FIN == 13)
 
+
 ## Filtrando os que tem pelo menos um sintoma ################
 
 df_chik <- df_chik %>% filter(!(
@@ -58,6 +59,7 @@ df <- df %>% filter(!(
     is.na(NAUSEA) & is.na(DOR_COSTAS) & is.na(CONJUNTVIT) & is.na(ARTRITE) & is.na(ARTRALGIA) &
     is.na(PETEQUIA_N) & is.na(LEUCOPENIA) & is.na(LACO) & is.na(DOR_RETRO)
 ))
+
 
 ## Corrigir os sintomas #############################################
 
@@ -95,7 +97,6 @@ df_total <- df_total %>% filter(!is.na(long))
 # Corrigir idade ###################################################
 df_total <- df_total %>% mutate(NU_IDADE_N = decodifica_idade_SINAN(NU_IDADE_N))
 df_total <- df_total %>% filter(!is.na(NU_IDADE_N))
-df_total <- df_total %>% mutate(NU_IDADE_N >= 120)
 
 # Corrigir hospitalizacao #########################################
 df_total <- df_total %>% mutate(HOSPITALIZ = ifelse(HOSPITALIZ == 1, 1, 0))
