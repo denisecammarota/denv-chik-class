@@ -23,31 +23,31 @@ df_epi = df.loc[df['CRITERIO'] == 2,] # epidemiologicos
 
 i = 0
 
-for n_sg in states:    
+for n_sg in states:
     print(n_sg)
     model_name = models[i]
-    
+
     df_lab_sg = df_lab.loc[df_lab['SG_UF'] == n_sg,]
     df_epi_sg = df_epi.loc[df_epi['SG_UF'] == n_sg,]
-        
-    X_lab_sg = df_lab_sg.drop(columns = ['CHIK', 'SG_UF', 'CRITERIO']) 
-    X_epi_sg = df_epi_sg.drop(columns = ['CHIK', 'SG_UF', 'CRITERIO']) 
+
+    X_lab_sg = df_lab_sg.drop(columns = ['CHIK', 'SG_UF', 'CRITERIO'])
+    X_epi_sg = df_epi_sg.drop(columns = ['CHIK', 'SG_UF', 'CRITERIO'])
     y_lab_sg = df_lab_sg['CHIK']
     y_epi_sg = df_epi_sg['CHIK']
-        
+
     X_train, X_test, y_train, y_test = train_test_split(X_lab_sg, y_lab_sg, stratify = y_lab_sg, test_size = 0.3, random_state = 0)
     X_test, X_val, y_test, y_val = train_test_split(X_test, y_test, stratify = y_test, test_size = 0.5, random_state = 0)
-    
-    
-    name_model = 'state_'+str(n_sg)+'/full/'+ model_name +'_'+str(n_sg)+'.pkl'
+
+
+    name_model = 'state_'+str(n_sg)+'/full/model_'+ model_name +'.pkl' 
     model = joblib.load(name_model)
-    
+
     feature_names = ['Fever', 'Myalgia', 'Headache', 'Rash', 'Vomiting', 'Nausea', 'Back pain', 'Conjunctivitis', 'Arthritis', 'Arthralgia', 'Petechiae', 'Leukopenia', 'Tourniquet test', 'Retro orbital pain', 'Patient age', 'Hospitalization status', 'Latitude', 'Longitude', 'Month of symptom onset', 'Days since symptom onset', 'Patient sex']
-    
+
     explainer = shap.TreeExplainer(model)
     shap_values = explainer.shap_values(X_test)
-    plt.title(state_name[i], fontsize = 18)
-    shap.summary_plot(shap_values, X_test, feature_names=feature_names, show = False)
+    shap.summary_plot(shap_values, X_test, feature_names=feature_names, max_display = len(feature_names), show = False) 
+    plt.title(state_name[i], fontsize = 18) 
     plt.tight_layout()
     plt.savefig('figures/shap_test_full_'+str(n_sg)+'.pdf')
     plt.show()
